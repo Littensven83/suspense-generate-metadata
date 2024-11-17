@@ -1,13 +1,13 @@
 import { Suspense } from "react"
 
-export async function generateMetadata() {
-    const results = await fetch('https://postman-echo.com/delay/2');
-    await results.json();
-    return {
-        title: 'Test',
-        description: 'Test',
-    }
-}
+// export async function generateMetadata() {
+//     const results = await fetch('https://postman-echo.com/delay/2');
+//     await results.json();
+//     return {
+//         title: 'Test',
+//         description: 'Test',
+//     }
+// }
 
 async function PageContent() {
     const results = await fetch('https://postman-echo.com/delay/2');
