@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# In the main branch:
 
-## Getting Started
+First, intall the dependencies
+```bash
+npm install
+```
 
-First, run the development server:
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The objective of this test is to implement a server side component with dynamically generated metadata by calling an endpoint that will last 2 seconds (https://postman-echo.com/delay/2)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The dynamic metadata is generated using Next.js's special function generateMetadata(). Both this function and the page need to fetch data from the same API endpoint, so the requests are made in parallel.
 
-## Learn More
+The expected behavior is that the `loading fallback` should render immediately, and after 2 seconds, the final page should render with the data loaded from the API. However, this is not working as expected. Currently, the request gets blocked, nothing is displayed in the browser, and after 2 seconds, the page renders directly with the fetched data, completely skipping the loading fallback.
 
-To learn more about Next.js, take a look at the following resources:
+When the generateMetadata function is commented out, the <Suspense> block works correctly as expected. This behavior without generateMetadata can be observed in the `nogm` branch by running the following command:
+```bash
+git checkout nogm
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This is a major issue because it prevents the use of server components while providing both a good user experience and good SEO.
